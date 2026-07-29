@@ -18,7 +18,7 @@ def run_health_check_server():
     server.serve_forever()
 
 # Bot tokeni va Mini App manzili
-TOKEN = "8831876122:AAEeAPLgdKPEcArS89GIkyTQ5sYUG480dKY"
+TOKEN = "8831876122:AAG_A9zvffr_CwrvoTYYvM9njRegWIh1UwI"
 WEBAPP_URL = "https://abduraxmonlatifjonov4126-web.github.io/My-vocab/"
 
 # Oddiy va barqaror TeleBot (async xatolarisiz)
