@@ -1,9 +1,23 @@
 import os
 import asyncio
+from http.server import HTTPServer, BaseHTTPRequestHandler
+import threading
 from telebot.async_telebot import AsyncTeleBot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-# Bot tokenini Render muhit o'zgaruvchisidan (Environment Variable) olamiz
+# Render so'rayotgan portni ochib beruvchi soxta HTTP server
+class HealthCheckHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot is alive!")
+
+def run_health_check_server():
+    port = int(os.environ.get("PORT", 8080))
+    server = HTTPServer(('0.0.0.0', port), HealthCheckHandler)
+    server.serve_forever()
+
+# Bot tokenini olish
 TOKEN = os.getenv("BOT_TOKEN")
 WEBAPP_URL = "https://abduraxmonlatifjonov4126-web.github.io/My-vocab/"
 
@@ -36,8 +50,11 @@ async def send_welcome(message):
     )
 
 async def main():
+    # Render uchun portni fonda yoqamiz
+    threading.Thread(target=run_health_check_server, daemon=True).start()
+    
     print("Bot muvaffaqiyatli ishga tushdi...")
     await bot.polling(non_stop=True)
 
-if __name__ == "__main__":
+if name == "main":
     asyncio.run(main())
